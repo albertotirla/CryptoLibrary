@@ -11,24 +11,29 @@ public abstract class SubstitutionCifer : Cifer
 
     private static string ApplySubstitution(Dictionary<char, char> permutationTable, string text)
     {
+        text=text.ToLower();
         StringBuilder result = new();
         foreach (char item in text)
         {
-            result.Append(permutationTable[item]);
+            if (Char.IsLetter(item))
+            {
+                result.Append(permutationTable[item]);
+            }
+            else
+            {
+                result.Append(item);
+            }
         }
         return result.ToString();
     }
 
-    protected abstract Dictionary<char, char> GenerateSubstitutionTable<T>(T? key, CryptoOperations mode);
+    protected abstract Dictionary<char, char> GenerateSubstitutionTable<T>(T key, CryptoOperations mode);
 
     public override string Encrypt<T>(string planeText, T key)
     {
-Dictionary<char, char> PermutationTable = GenerateSubstitutionTable(key, CryptoOperations.Decrypt);
+        Dictionary<char, char> PermutationTable = GenerateSubstitutionTable(key, CryptoOperations.Decrypt);
         return ApplySubstitution(PermutationTable, planeText);
     }
-        throw new NotImplementedException();
-    }
-
     public override bool Equals(object? obj)
     {
         return base.Equals(obj);
